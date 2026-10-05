@@ -5,20 +5,26 @@ import tseslint from 'typescript-eslint';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 
-export default defineConfig([
-  tseslint.configs.recommended,
-  {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended],
-    files: ['src/server/**/*.{ts,tsx,mjs,cjs,js}'],
-    languageOptions: {
-      ecmaVersion: 2023,
-      globals: globals.node,
-      parserOptions: {
-        project: ['./tools/tsconfig.server.json'],
-        tsconfigRootDir: import.meta.dirname,
+export default defineConfig({
+  ssr: {
+    noExternal: true,
+  },
+  build: {
+    emptyOutDir: false,
+    ssr: 'index.ts',
+    outDir: '../../dist/server',
+    target: 'node22',
+    sourcemap: true,
+    rollupOptions: {
+      external: [...builtinModules],
+      output: {
+        format: 'cjs',
+        entryFileNames: 'index.cjs',
+        inlineDynamicImports: true,
       },
     },
   },
+});
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ['src/shared/**/*.{ts,tsx,mjs,cjs,js}'],
