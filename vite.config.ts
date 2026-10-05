@@ -4,5 +4,7 @@ import tailwind from '@tailwindcss/vite';
 import { devvit } from '@devvit/start/vite';
 
 export default defineConfig({
-  plugins: [react(), tailwind(), devvit()],
+  build: {
+    outDir: '../../dist/client', // No longer webroot
+  },
 });
